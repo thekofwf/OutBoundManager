@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 -->
+<!-- id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="sunin.outbound.model.mapper.IBatchMapper">
+
+	<insert id="insert" parameterType="_Batch">
+		INSERT INTO BATCH
+		(
+		TASKID, BATCHNAME, BATCHSTATE
+		)
+		VALUES
+		(
+		#{taskId}, #{batchName}, #{batchState}
+		)
+	</insert>
+
+	<select id="selectById" parameterType="String" resultType="_Batch">
+		SELECT
+		BATCHID batchId, TASKID taskId, BATCHNAME batchName, BATCHSTATE batchState
+		FROM BATCH
+		WHERE BATCHID=#{batchId}
+	</select>
+
+	<delete id="delete" parameterType="Map">
+		UPDATE BATCH
+		SET BATCHSTATE=#{batchState}
+		WHERE BATCHID=#{batchId}
+	</delete>
+
+	<update id="update" parameterType="_Batch">
+		UPDATE BATCH
+		SET BATCHNAME=#{batchName}
+		WHERE BATCHID=#{batchId}
+	</update>
+
+	<update id="changeState" parameterType="Map">
+		UPDATE BATCH
+		SET BATCHSTATE=#{batchState}
+		WHERE BATCHID=#{batchId}
+	</update>
+
+	<select id="selectBatchsCount" parameterType="String" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM BATCH ${condition}
+	</select>
+
+	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+	<select id="selectBatchs" parameterType="String" resultType="_Batch">
+		SELECT
+		BATCHID batchId, TASKID taskId, BATCHNAME batchName, BATCHSTATE batchState
+		FROM BATCH ${condition}
+	</select>
+
+</mapper>

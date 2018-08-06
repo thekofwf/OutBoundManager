@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 -->
+<!-- id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="sunin.outbound.model.mapper.IJobListMapper">
+
+	<insert id="insert" parameterType="Map">
+		INSERT INTO ${table}
+		(
+		TASKID, TASKBATCHID, DNIS, CURRENT_STATUS, NEXT_RETRY, START_TIME, END_TIME)
+		VALUES
+		(
+		#{jobList.taskId},
+		#{jobList.taskBatchId}, #{jobList.dnis}, #{jobList.currentStatus}, #{jobList.nextRetry}, #{jobList.startTime}, #{jobList.endTime}
+		)
+	</insert>
+
+	<update id="changeState" parameterType="Map">
+		UPDATE ${table}
+		SET CURRENT_STATUS=#{state}
+		WHERE TASKBATCHID=#{batchId} AND (CURRENT_STATUS=#{stateOld1}
+		OR CURRENT_STATUS=#{stateOld2})
+	</update>
+
+	<select id="selectJobListsCount" parameterType="Map" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM ${table} ${condition}
+	</select>
+
+	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+	<select id="selectJobLists" parameterType="Map" resultType="_JobList">
+		SELECT
+		ID id , TASKID taskId, TASKBATCHID taskBatchId, DNIS dnis, ATTEMPTS attempts,
+		CURRENT_STATUS currentStatus, FINAL_STATUS finalStatus, NEXT_RETRY nextRetry, REASON_CODE reasonCode, RNA rna,
+		CLI cli, UUI uui, LAST_UPDATED
+		lastUpdated, START_TIME startTime, END_TIME endTime, CALLID callId
+		FROM ${table} ${condition}
+	</select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 -->
+<!-- id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="sunin.outbound.model.mapper.IApplicationMapper">
+
+	<insert id="insert" parameterType="_Application">
+		INSERT INTO APPLICATION
+		(
+		NAME, DESCRIPTION, STATUS
+		)
+		VALUES
+		(
+		#{name}, #{description}, #{status}
+		)
+	</insert>
+
+	<update id="delete" parameterType="_Application">
+		UPDATE APPLICATION
+		SET STATUS=#{status}
+		WHERE ID=#{id}
+	</update>
+
+	<update id="update" parameterType="_Application">
+		UPDATE APPLICATION
+		SET NAME=#{name}, DESCRIPTION=#{description}
+		WHERE ID=#{id}
+	</update>
+	
+	<select id="selectApplicationsCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM APPLICATION
+	</select>
+
+	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+	<select id="selectApplications" parameterType="String" resultType="_Application">
+		SELECT
+		ID id, NAME name, DESCRIPTION description, STATUS status
+		FROM APPLICATION
+		${condition}
+	</select>
+
+</mapper>

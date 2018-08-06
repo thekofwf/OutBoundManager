@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 -->
+<!-- id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="sunin.outbound.model.mapper.ITaskMapper">
+
+	<insert id="insert" parameterType="_Task">
+		INSERT INTO TASK
+		(
+		TASKNAME, MaxConcurrentCall, ANI, ApplicationName,
+		STARTTIME1, ENDTIME1, STARTTIME2, ENDTIME2, STARTTIME3,
+		ENDTIME3, STARTTIME4, ENDTIME4, STARTDATE, ENDDATE,
+		CURRENTSTATE, MONDAYFLAG, TUESDAYFLAG, WEDNESDAYFLAG, THURSDAYFLAG,
+		FRIDAYFLAG, SATURDAYFLAG, SUNDAYFLAG, RNA, MAX_ATTEMPTS,
+		RealTimeConcurrentCall, RETRY_INTERVAL, USERID
+		)
+		VALUES
+		(
+		#{taskName}, #{maxConcurrentCall}, #{ani}, #{applicationName},
+		#{startTime1}, #{endTime1}, #{startTime2}, #{endTime2}, #{startTime3},
+		#{endTime3}, #{startTime4}, #{endTime4}, #{startDate}, #{endDate},
+		#{currentState}, #{mondayFlag}, #{tuesdayFlag}, #{wednesdayFlag}, #{thursdayFlag},
+		#{fridayFlag}, #{saturdayFlag}, #{sundayFlag}, #{rna}, #{maxAttempts},
+		#{realTimeConcurrentCall}, #{retryInterval}, #{userId}
+		)
+	</insert>
+
+	<select id="selectById" parameterType="String" resultType="_Task">
+		SELECT
+		TASKID taskId, TASKNAME taskName, MaxConcurrentCall maxConcurrentCall, ANI ani, ApplicationName applicationName,
+		STARTTIME1 startTime1, ENDTIME1 endTime1, STARTTIME2 startTime2, ENDTIME2 endTime2, STARTTIME3 startTime3,
+		ENDTIME3 endTime3, STARTTIME4 startTime4, ENDTIME4 endTime4, STARTDATE startDate, ENDDATE endDate,
+		CURRENTSTATE currentState, MONDAYFLAG mondayFlag, TUESDAYFLAG tuesdayFlag, WEDNESDAYFLAG wednesdayFlag, THURSDAYFLAG thursdayFlag,
+		FRIDAYFLAG fridayFlag, SATURDAYFLAG saturdayFlag, SUNDAYFLAG sundayFlag, RNA rna, MAX_ATTEMPTS maxAttempts,
+		RealTimeConcurrentCall realTimeConcurrentCall, RETRY_INTERVAL retryInterval, USERID userId
+		FROM TASK
+		WHERE TASKID=#{taskId} AND USERID=#{userId}
+	</select>
+
+	<update id="delete" parameterType="Map">
+		UPDATE TASK
+		SET CURRENTSTATE=#{currentState}
+		WHERE TASKID=#{taskId} AND USERID=#{userId}
+	</update>
+
+	<update id="update" parameterType="_Task">
+		UPDATE TASK
+		SET TASKNAME=#{taskName}, MaxConcurrentCall=#{maxConcurrentCall}, ANI=#{ani}, ApplicationName=#{applicationName},
+		STARTTIME1=#{startTime1}, ENDTIME1=#{endTime1}, STARTTIME2=#{startTime2}, ENDTIME2=#{endTime2}, STARTTIME3=#{startTime3},
+		ENDTIME3=#{endTime3}, STARTTIME4=#{startTime4}, ENDTIME4=#{endTime4}, STARTDATE=#{startDate}, ENDDATE=#{endDate},
+		CURRENTSTATE=#{currentState}, MONDAYFLAG=#{mondayFlag}, TUESDAYFLAG=#{tuesdayFlag}, WEDNESDAYFLAG=#{wednesdayFlag}, THURSDAYFLAG=#{thursdayFlag},
+		FRIDAYFLAG=#{fridayFlag}, SATURDAYFLAG=#{saturdayFlag}, SUNDAYFLAG=#{sundayFlag}, RNA=#{rna}, MAX_ATTEMPTS=#{maxAttempts},
+		RETRY_INTERVAL=#{retryInterval}
+		WHERE TASKID=#{taskId} AND USERID=#{userId}
+	</update>
+
+	<select id="selectTasksCount" parameterType="String" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM TASK ${condition}
+	</select>
+	
+	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+	<select id="selectTasks" parameterType="String" resultType="_Task">
+		SELECT
+		TASKID taskId, TASKNAME taskName, MaxConcurrentCall maxConcurrentCall, ANI ani, ApplicationName applicationName,
+		STARTTIME1 startTime1, ENDTIME1 endTime1, STARTTIME2 startTime2, ENDTIME2 endTime2, STARTTIME3 startTime3,
+		ENDTIME3 endTime3, STARTTIME4 startTime4, ENDTIME4 endTime4, STARTDATE startDate, ENDDATE endDate,
+		CURRENTSTATE currentState, MONDAYFLAG mondayFlag, TUESDAYFLAG tuesdayFlag, WEDNESDAYFLAG wednesdayFlag, THURSDAYFLAG thursdayFlag,
+		FRIDAYFLAG fridayFlag, SATURDAYFLAG saturdayFlag, SUNDAYFLAG sundayFlag, RNA rna, MAX_ATTEMPTS maxAttempts,
+		RealTimeConcurrentCall realTimeConcurrentCall, RETRY_INTERVAL retryInterval, USERID userId
+		FROM TASK ${condition}
+	</select>
+
+</mapper>
